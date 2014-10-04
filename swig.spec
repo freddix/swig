@@ -1,14 +1,11 @@
 Summary:	Interface generator for Perl, Tcl, Guile and Python
 Name:		swig
-Version:	2.0.7
-Release:	2
+Version:	3.0.2
+Release:	1
 License:	distributable
 Group:		Development/Languages
 Source0:	http://downloads.sourceforge.net/swig/%{name}-%{version}.tar.gz
-# Source0-md5:	8c2f6a9f51677647a64c8adb1b176299
-Patch0:		%{name}-format.patch
-Patch1:		swig-id3530078.patch
-Patch2:		swig-pyint.patch
+# Source0-md5:	62f9b0d010cef36a13a010dc530d0d41
 URL:		http://www.swig.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -46,9 +43,6 @@ SWIG library: python.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
 %{__libtoolize}
@@ -68,16 +62,23 @@ install -d $RPM_BUILD_ROOT%{_mandir}/man1
 	DESTDIR=$RPM_BUILD_ROOT \
 	M4_INSTALL_DIR=$RPM_BUILD_ROOT%{_aclocaldir}
 
+%if 0
+%check
+%{__make} check
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
 %doc Doc CHANGES CHANGES.current README ANNOUNCE TODO LICENSE
+%attr(755,root,root) %{_bindir}/ccache-swig
 %attr(755,root,root) %{_bindir}/swig
 %{_datadir}/%{name}
 %exclude %{_datadir}/%{name}/%{version}/perl5
 %exclude %{_datadir}/%{name}/%{version}/python
+%{_mandir}/man1/ccache-swig.1*
 
 %files perl
 %defattr(644,root,root,755)
